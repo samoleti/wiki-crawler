@@ -1,12 +1,15 @@
-package com.smule.articles_repository;
+package com.smule.wikicrawler.repository;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ArticleRepositoryHashMap implements ArticleRepository{
+@Repository
+public class ArticleRepositoryHashMap implements ArticleRepository {
+
     private final Map<String, ArticleResult> results = new ConcurrentHashMap<>();
+
     public boolean containsResultForArticle(String article) {
         return results.containsKey(article);
     }
@@ -25,7 +28,6 @@ public class ArticleRepositoryHashMap implements ArticleRepository{
     public ArticleResult getResultsFor(String article) {
         return results.get(article);
     }
-
 
     @Override
     public String toString() {

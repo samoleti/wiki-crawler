@@ -1,7 +1,7 @@
-package com.smule.wikicrawler;
+package com.smule.wikicrawler.service;
 
-import com.smule.articles_repository.ArticleRepository;
-import com.smule.articles_repository.ArticleResult;
+import com.smule.wikicrawler.repository.ArticleRepository;
+import com.smule.wikicrawler.repository.ArticleResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,19 +16,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class Crawler {
+public class CrawlerService {
 
     private static final String articleCommonPattern = "(?<=<a href=\\\\\"\\/wiki\\/)([^:]*?)(?=\\\\|#(.*?)\\\\)";
-
     private final ArticleRepository articleRepository;
-    public Crawler(ArticleRepository articleRepository) {
+
+    public CrawlerService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
     private boolean isValidArticle(String article) {
         return !article.contains(" ");
     }
-
 
     private List<String> parseArticles(String json) {
         List<String> resultArticles = new ArrayList<>();

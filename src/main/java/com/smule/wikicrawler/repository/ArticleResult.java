@@ -1,9 +1,10 @@
-package com.smule.articles_repository;
+package com.smule.wikicrawler.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleResult {
+
     final String articleName;
     final List<String> articleLinks;
 
@@ -21,7 +22,6 @@ public class ArticleResult {
         this.articleName = articleName;
         this.articleLinks = new ArrayList<>();
     }
-
 
     public void add(String linkingArticle) {
         articleLinks.add(linkingArticle);
