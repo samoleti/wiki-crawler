@@ -8,16 +8,6 @@ public class ArticleResult {
     final String articleName;
     final List<String> articleLinks;
 
-    public ArticleResult(String articleName, List<String> articleLinks) {
-        this.articleName = articleName;
-        this.articleLinks = articleLinks;
-    }
-
-    public ArticleResult() {
-        this.articleName = "";
-        this.articleLinks = new ArrayList<>();
-    }
-
     public ArticleResult(String articleName) {
         this.articleName = articleName;
         this.articleLinks = new ArrayList<>();

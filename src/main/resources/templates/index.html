@@ -9,7 +9,7 @@
 </head>
 <body>
 <p id="text">Enter link to Wikipedia article</p>
-<form th:action="@{/call}" method="get">
+<form th:action="@{/crawl}" method="get">
     <input type="url" id="wiki_link" name="wiki_link" class="w3-round-xlarge" th:name="url"><br>
     <input type="submit" value="Submit" id="submit_button" class="w3-button  w3-round-xlarge w3-green">
 </form>

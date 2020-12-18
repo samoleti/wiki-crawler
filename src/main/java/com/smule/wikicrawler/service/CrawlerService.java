@@ -42,7 +42,6 @@ public class CrawlerService {
     }
 
     private boolean parseArticlesBackwards(String json, String articlePattern) {
-        //List<String> resultArticles = new ArrayList<>();
         final Matcher matcher = Pattern.compile(articlePattern).matcher(json);
         return matcher.find();
     }
@@ -63,7 +62,7 @@ public class CrawlerService {
         ExecutorService service = Executors.newFixedThreadPool(50);
         for(String article : originalArticleReferences) {
             service.submit(() -> {
-                String responseArticle = restTemplate(article); // returns json of responseArticle
+                String responseArticle = restTemplate(article);
                 if(parseArticlesBackwards(responseArticle, originalArticlePattern)) {
                     articleRepository.addLinkForArticle(articleTitle,article);
                 }
