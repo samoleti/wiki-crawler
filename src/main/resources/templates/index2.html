@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style2.css"/>
+</head>
+<body>
+<div class="center">
+    <div class="heading"> <b>Results for <span th:text="${topic}"></span> </b></div>
+    <br>
+    <ul>
+        <li th:each="article : ${articles}">
+            <a th:href="@{https://en.wikipedia.org/wiki/{article}(article=${article})}" th:target="_blank">
+                <span th:text="${article}"> </span>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
