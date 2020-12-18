@@ -1,7 +1,5 @@
 package com.smule.wikicrawler.repository;
 
-import org.springframework.stereotype.Repository;
-
 public interface ArticleRepository {
 
     boolean containsResultForArticle(String article);
