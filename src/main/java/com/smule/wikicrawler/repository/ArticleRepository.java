@@ -4,7 +4,7 @@ public interface ArticleRepository {
 
     boolean containsResultForArticle(String article);
 
-    void addLinkForArticle(String article, String linkingArticle);
+    void addLinkForArticle(String article, Article linkingArticle);
 
     ArticleResult getResultsFor(String article);
 }

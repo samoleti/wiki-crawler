@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="style2.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 <div class="center">
-    <div class="heading"> <b>Results for <span th:text="${topic}"></span> </b></div>
+    <br>
+    <div class="heading" style="font-size: 18px"> <b>Results for <span th:text="${article_result.articleName}"></span> </b></div>
     <br>
     <ul>
-        <li th:each="article : ${articles}">
-            <a th:href="@{https://en.wikipedia.org/wiki/{article}(article=${article})}" th:target="_blank">
-                <span th:text="${article}"> </span>
+        <li th:each="article : ${article_result.articleLinks}">
+            <a th:href="@{https://en.wikipedia.org/wiki/{article}(article=${article.linkName})}" th:target="_blank">
+                <span th:text="${article.titleName}" style="color:MediumPurple"> </span>
             </a>
         </li>
     </ul>
+    <br>
+    <form th:action="@{/}" method="get">
+        <input type="submit" value="Try with another article" id="submit_button" class="w3-button  w3-round-medium w3-white w3-border w3-border-green">
+    </form>
+    <br>
 </div>
 </body>
 </html>

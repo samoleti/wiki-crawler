@@ -1,10 +1,16 @@
 package com.smule.wikicrawler.service;
 
+import com.smule.wikicrawler.repository.Article;
 import com.smule.wikicrawler.repository.ArticleRepository;
 import com.smule.wikicrawler.repository.ArticleResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +24,8 @@ import java.util.stream.Collectors;
 public class CrawlerService {
 
     private static final String articleCommonPattern = "(?<=<a href=\\\\\"\\/wiki\\/)([^:]*?)(?=\\\\|#(.*?)\\\\)";
+    private static final String articleTitlePattern = "(?<=title\":\")(.*?)(?=\")";
+
     private final ArticleRepository articleRepository;
 
     public CrawlerService(ArticleRepository articleRepository) {
@@ -26,6 +34,12 @@ public class CrawlerService {
 
     private boolean isValidArticle(String article) {
         return !article.contains(" ");
+    }
+
+    private String extractTitle(String json) {
+        final Matcher matcher = Pattern.compile(articleTitlePattern).matcher(json);
+        matcher.find();
+        return matcher.group(0);
     }
 
     private List<String> parseArticles(String json) {
@@ -49,21 +63,32 @@ public class CrawlerService {
 
     String restTemplate(String articleTitle) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity(wikiApi + articleTitle, String.class).getBody();
+        return restTemplate.getForEntity(wikiApi + decoded(articleTitle), String.class).getBody();
+    }
+
+    private String decoded(String articleTitle) {
+        try {
+            return URLDecoder.decode(articleTitle, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return articleTitle;
     }
 
     public String getTitle(String url) {
         String[] urlSplit = url.split("/");
-        return urlSplit[urlSplit.length - 1];
+        String encodedString = urlSplit[urlSplit.length - 1];
+        return encodedString;
     }
 
     public void getArticles(String articleTitle, List<String> originalArticleReferences, String originalArticlePattern) {
         ExecutorService service = Executors.newFixedThreadPool(50);
         for(String article : originalArticleReferences) {
-            service.submit(() -> {
+           service.submit(() -> {
                 String responseArticle = restTemplate(article);
                 if(parseArticlesBackwards(responseArticle, originalArticlePattern)) {
-                    articleRepository.addLinkForArticle(articleTitle,article);
+                    articleRepository.addLinkForArticle(
+                            articleTitle, new Article(article,extractTitle(responseArticle)));
                 }
             });
         }
@@ -82,8 +107,11 @@ public class CrawlerService {
         }
         String originalArticlePattern = "<a href=\\\\\"\\/wiki\\/" + articleTitle + "\\\\\"";
         String response = restTemplate(articleTitle);
+        String articlePrettyName = extractTitle(response);
         List<String> originalArticleReferences = Collections.synchronizedList(parseArticles(response));
         getArticles(articleTitle,originalArticleReferences, originalArticlePattern);
-        return articleRepository.getResultsFor(articleTitle);
+        ArticleResult results = articleRepository.getResultsFor(articleTitle);
+        results.setArticleName(articlePrettyName);
+        return results;
     }
 }

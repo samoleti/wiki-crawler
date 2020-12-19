@@ -5,20 +5,16 @@ import java.util.List;
 
 public class ArticleResult {
 
-    final String articleName;
-    final List<String> articleLinks;
+    String articleName;
+    final List<Article> articleLinks;
 
     public ArticleResult(String articleName) {
         this.articleName = articleName;
         this.articleLinks = new ArrayList<>();
     }
 
-    public void add(String linkingArticle) {
+    public void add(Article linkingArticle) {
         articleLinks.add(linkingArticle);
-    }
-
-    public List<String> getArticles() {
-        return articleLinks;
     }
 
     @Override
@@ -27,5 +23,17 @@ public class ArticleResult {
                 "articleName='" + articleName + '\'' +
                 ", articleLinks=" + articleLinks +
                 '}';
+    }
+
+    public String getArticleName() {
+        return articleName;
+    }
+
+    public List<Article> getArticleLinks() {
+        return articleLinks;
+    }
+
+    public void setArticleName(String articlePrettyName) {
+        articleName = articlePrettyName;
     }
 }

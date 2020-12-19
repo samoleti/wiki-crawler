@@ -13,7 +13,7 @@ public class ArticleRepositoryHashMap implements ArticleRepository {
         return results.containsKey(article);
     }
 
-    public void addLinkForArticle(String article, String linkingArticle) {
+    public void addLinkForArticle(String article, Article linkingArticle) {
         if (results.containsKey(article)) {
             ArticleResult articleResult = results.get(article);
             articleResult.add(linkingArticle);

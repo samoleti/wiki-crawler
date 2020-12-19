@@ -18,8 +18,7 @@ public class CrawlerController {
     @GetMapping("/crawl")
     String crawl(@RequestParam("url") String url, Model model) {
         String articleTitle = crawlerService.getTitle(url);
-        model.addAttribute("topic", articleTitle);
-        model.addAttribute("articles", crawlerService.crawl(url).getArticles());
+        model.addAttribute("article_result", crawlerService.crawl(url));
         return "index2";
     }
 
