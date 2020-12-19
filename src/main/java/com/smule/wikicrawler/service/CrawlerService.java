@@ -63,17 +63,17 @@ public class CrawlerService {
 
     String restTemplate(String articleTitle) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity(wikiApi + decoded(articleTitle), String.class).getBody();
+        return restTemplate.getForEntity(wikiApi + articleTitle, String.class).getBody();
     }
 
-    private String decoded(String articleTitle) {
-        try {
-            return URLDecoder.decode(articleTitle, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return articleTitle;
-    }
+//    private String decoded(String articleTitle) {
+//        try {
+//            return URLDecoder.decode(articleTitle, StandardCharsets.UTF_8.toString());
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        return articleTitle;
+//    }
 
     public String getTitle(String url) {
         String[] urlSplit = url.split("/");
